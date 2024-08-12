@@ -1,0 +1,62 @@
+<div class="container mt-5">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+      <!-- Título estilizado -->
+      <h2 class="text-primary font-weight-bold">
+          <i class="fas fa-users"></i> <span class="text-uppercase" style="letter-spacing: 2px;">Listado de Clientes</span>
+      </h2>
+      <!-- Botón con ícono de agregar cliente -->
+      <a href="/clientes/nuevo" class="btn btn-success btn-lg" title="Agregar Cliente">
+          <i class="fas fa-user-plus"></i>
+      </a>
+  </div>
+
+  <form method="GET" action="/filtrar" class="mb-4">
+      <div class="form-row align-items-center">
+          <div class="col-auto">
+              <label for="categoriaSelect" class="col-form-label">Filtrar por Categoría:</label>
+          </div>
+          <div class="col-auto">
+              <select id="categoriaSelect" name="categoriaId" class="form-control" onchange="this.form.submit()">
+                  <option value="todos" <%= categoriaId === 'todos' ? 'selected' : '' %>>Todos</option>
+                  <% categorias.forEach(categoria => { %>
+                      <option value="<%= categoria.id %>" <%= categoriaId == categoria.id ? 'selected' : '' %>>
+                          <%= categoria.nombre %>
+                      </option>
+                  <% }) %>
+              </select>
+          </div>
+      </div>
+  </form>
+
+  <div class="table-responsive">
+      <table class="table table-hover table-striped">
+          <thead class="thead-dark">
+              <tr>
+                  <th>ID</th>
+                  <th>Nombre</th>
+                  <th>Email</th>
+                  <th>Teléfono</th>
+                  <th>Categoría</th>
+                  <th>Acciones</th>
+              </tr>
+          </thead>
+          <tbody>
+              <% clientes.forEach(cliente => { %>
+                  <tr>
+                      <td><%= cliente.id %></td>
+                      <td><%= cliente.nombre %></td>
+                      <td><%= cliente.email %></td>
+                      <td><%= cliente.telefono %></td>
+                      <td><%= cliente.categoria ? cliente.categoria.nombre : 'Sin categoría' %></td>
+                      <td>
+                          <a href="/clientes/editar/<%= cliente.id %>" class="btn btn-sm btn-warning">Editar</a>
+                          <form action="/clientes/eliminar/<%= cliente.id %>" method="POST" class="d-inline">
+                              <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
+                          </form>
+                      </td>
+                  </tr>
+              <% }) %>
+          </tbody>
+      </table>
+  </div>
+</div>
